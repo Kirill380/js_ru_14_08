@@ -5,35 +5,22 @@ import PropTypes from 'prop-types'
 
 class CommentList extends Component {
     static defaultProps = {
-        comments: []
-    }
-
-    static propTypes = {
-        comments: PropTypes.array,
-        toggleOpen : PropTypes.func.isRequired,
-        isOpen: PropTypes.bool
-    }
-
-    componentWillMount() {
-        console.log('---', 'mounting comment list')
+        comments: [],
+        isOpen: PropTypes.bool,
+        toggleOpen: PropTypes.func
     }
 
     componentDidMount() {
         console.log('---', 'mounted')
     }
 
-    componentWillReceiveProps() {
-        console.log('---', 'updating props')
-    }
-
-    componentWillUpdate() {
-        console.log('---', 'updating state or props')
-    }
-
     componentWillUnmount() {
         console.log('---', 'unmounting')
     }
 
+    componentDidUpdate() {
+        console.log('---', 'updated')
+    }
 
     render() {
         const {isOpen, toggleOpen} = this.props

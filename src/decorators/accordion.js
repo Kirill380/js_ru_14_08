@@ -1,17 +1,29 @@
 import React from 'react'
 
-export default (OriginalComponent) => class WrappedComponent extends React.Component {
-    
-    state = {
-        openChildId: null
-    }
-
-    toggleOpenChild = (openChildId) => () => {
-        let id = this.state.openChildId != openChildId ? openChildId : null
-        this.setState({ openChildId : id})
+export default Component => class Accordion extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            openItemId: props.defaultOpenId
+        }
     }
 
     render() {
-        return <OriginalComponent {...this.props} {...this.state} toggleOpenChild = {this.toggleOpenChild}/>
+        return <Component {...this.props} toggleOpenItem = {this.toggleOpenItemMemoized} openItemId = {this.state.openItemId}/>
     }
+
+    toggleOpenItem = openItemId => ev => {
+        this.setState({
+            openItemId: openItemId === this.state.openItemId ? null : openItemId
+        })
+    }
+
+    toggleOpenItemMemoized = (openItemId) => {
+        if (this.memoizedTogglers.get(openItemId)) return this.memoizedTogglers.get(openItemId)
+        const toggler = this.toggleOpenItem(openItemId)
+        this.memoizedTogglers.set(openItemId, toggler)
+        return toggler
+    }
+
+    memoizedTogglers = new Map()
 }
